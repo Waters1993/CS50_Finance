@@ -230,9 +230,10 @@ def register():
             # Generate a hash key to be placed in the data base instead of the password
             hashkey = generate_password_hash(request.form.get("password"), method='pbkdf2:sha256', salt_length=8)
             try:
-                db.execute("insert into users (username, hash) values (? , ?)", request.form.get("username"), hashkey)
+                db.execute("insert into users (username, hash) values (%s , %s)", (request.form.get("username"), hashkey))
+                db_aws.commit()
             except:
-                return apology("Username in use")
+                return apology("this user name already exists")
 
             return redirect("/")
 
