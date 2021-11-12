@@ -10,12 +10,14 @@ db_aws = mysql.connector.connect(
 mycursor = db_aws.cursor()
 
 #mycursor.execute("CREATE TABLE users (id INTEGER PRIMARY KEY AUTO_INCREMENT, username VARCHAR(200) NOT NULL, hash TEXT NOT NULL, cash NUMERIC NOT NULL DEFAULT 10000.00)")
-mycursor.execute("insert into users (username, hash) values(%s, %s)",("mollie", 1234))
-db_aws.commit()
+#mycursor.execute("insert into users (username, hash) values(%s, %s)",("mollie", 1234))
+#db_aws.commit()
 #mycursor.execute("delete from users")
-mycursor.execute("select * from users")
+mycursor.execute("SELECT * FROM users where username = 'q' ")
 
 
 data = mycursor.fetchall()
+
+
 for row in data:
-      print(row)
+      print(row[0]['id'])
