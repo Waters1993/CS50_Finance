@@ -1,5 +1,9 @@
 import os
 import mysql.connector
+import sys
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
@@ -50,6 +54,7 @@ db_aws = mysql.connector.connect(
 db = db_aws.cursor()
 
 # Make sure API key is set
+
 if not os.environ.get("API_KEY"):
     raise RuntimeError("API_KEY not set")
 
@@ -59,16 +64,23 @@ if not os.environ.get("API_KEY"):
 def index():
     """Show portfolio of stocks"""
     user_id = session["user_id"]
+    
+     
+    db.execute("SELECT symbol, name, price, SUM(shares) as totalShares FROM transactions WHERE user_id = %s GROUP BY symbol", (user_id,))
+    stocks = db.fetchall()
+        
+    
+    
+    db.execute("SELECT cash FROM users WHERE id = %s", ( userid[0][3] ,))
 
-    stocks = db.execute(
-        "SELECT symbol, name, price, SUM(shares) as totalShares FROM transactions WHERE user_id = ? GROUP BY symbol", user_id)
-    cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
+    cash = db.fetchall()
 
     total = cash
 
     for stock in stocks:
         total += stock["price"] * stock["totalShares"]
 
+    app.logger.info("got through sql querys")
     return render_template("index.html", stocks=stocks, cash=cash, usd=usd, total=total)
 
 
@@ -140,7 +152,7 @@ def login():
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-
+        
         # Ensure username was submitted
         if not request.form.get("username"):
             return apology("must provide username", 403)
@@ -150,9 +162,10 @@ def login():
             return apology("must provide password", 403)
 
         # Query database for username
+        print("Execute query")
         db.execute("SELECT * FROM users WHERE username = %s", (request.form.get("username"),))
        # db.execute("insert into users (username, hash) values (%s , %s)", (request.form.get("username"), hashkey))
-        rows = db.fetchone()
+        rows = db.fetchall()
         # Ensure username exists and password is correct
         if db.rowcount != 1 or not check_password_hash(rows[0][2], request.form.get("password")):
             return apology("invalid username and/or password", 403)
@@ -165,6 +178,7 @@ def login():
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
+        print("Made it to login")
         return render_template("login.html")
 
 
@@ -237,10 +251,12 @@ def register():
             except:
                 return apology("this user name already exists")
 
+            print("redirected to index")
             return redirect("/")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
+        print("register")
         return render_template("register.html")
 
 

@@ -13,11 +13,13 @@ mycursor = db_aws.cursor()
 #mycursor.execute("insert into users (username, hash) values(%s, %s)",("mollie", 1234))
 #db_aws.commit()
 #mycursor.execute("delete from users")
-mycursor.execute("SELECT * FROM users where username = 'q' ")
+mycursor.execute("SELECT cash FROM users")
+#WHERE id = %s", ( user_id[0]["cash"] ,))")
 
 
+#columns = [column[0] for column in mycursor.description]
+#print(columns)
 data = mycursor.fetchall()
 
-
 for row in data:
-      print(row[0]['id'])
+      print(row)
