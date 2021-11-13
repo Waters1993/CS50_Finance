@@ -71,9 +71,9 @@ def index():
         
     
     
-    db.execute("SELECT cash FROM users WHERE id = %s", ( userid[0][3] ,))
+    db.execute("SELECT cash FROM users WHERE id = %s", ( user_id,))
 
-    cash = db.fetchall()
+    cash = db.fetchall()[0]
 
     total = cash
 
