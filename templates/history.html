@@ -16,10 +16,10 @@ History
     <tbody>
         {% for purchase in purchases %}
         <tr>
-            <td>{{purchase["symbol"]}}</td>
-            <td>{{purchase["shares"]}}</td>
-            <td>{{usd(purchase["price"])}}</td>
-            <td>{{purchase["time"]}}</td>
+            <td>{{purchase[5]}}</td>
+            <td>{{purchase[3]}}</td>
+            <td>{{usd(purchase[7])}}</td>
+            <td>{{purchase[6]}}</td>
         </tr>
         {% endfor %}
     </tbody>

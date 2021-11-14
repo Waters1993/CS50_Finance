@@ -222,3 +222,78 @@ DEBUG:urllib3.connectionpool:https://cloud.iexapis.com:443 "GET /stable/stock/AA
 INFO:werkzeug:127.0.0.1 - - [13/Nov/2021 23:53:33] "[32mPOST /sell HTTP/1.1[0m" 302 -
 INFO:werkzeug:127.0.0.1 - - [13/Nov/2021 23:53:33] "GET / HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [13/Nov/2021 23:53:33] "GET /static/styles.css HTTP/1.1" 200 -
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+INFO:werkzeug: * Restarting with stat
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:41:30] "[32mGET / HTTP/1.1[0m" 302 -
+WARNING:root:Exception raised while handling cache file
+[33mTraceback (most recent call last):[0m
+  File "c:\users\james\appdata\local\programs\python\python39\lib\site-packages\cachelib\file.py", line 219, in delete
+    os.remove(self._get_filename(key))
+[33mFileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\james\\AppData\\Local\\Temp\\tmp55xxhr7l\\81eeff45bdf773240ccfc93a8e93c4c3'[0m
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:41:31] "GET /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:41:34] "GET /static/styles.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:41:34] "GET /static/favicon.ico HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:41:39] "[32mPOST /login HTTP/1.1[0m" 302 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:41:39] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:41:39] "GET /static/styles.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:18] "GET /quote HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:19] "GET /static/styles.css HTTP/1.1" 200 -
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): cloud.iexapis.com:443
+DEBUG:urllib3.connectionpool:https://cloud.iexapis.com:443 "GET /stable/stock/aapl/quote?token=pk_e172cc2e238141ec8dec4d2a5c5b4b3b HTTP/1.1" 200 None
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:21] "POST /quote HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:21] "GET /static/styles.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:22] "GET /history HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:22] "GET /static/styles.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:31] "GET /quote HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:31] "GET /static/styles.css HTTP/1.1" 200 -
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): cloud.iexapis.com:443
+DEBUG:urllib3.connectionpool:https://cloud.iexapis.com:443 "GET /stable/stock/ccl/quote?token=pk_e172cc2e238141ec8dec4d2a5c5b4b3b HTTP/1.1" 200 None
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:33] "POST /quote HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:33] "GET /static/styles.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:34] "GET /buy HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:35] "GET /static/styles.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:37] "GET /quote HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:37] "GET /static/styles.css HTTP/1.1" 200 -
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): cloud.iexapis.com:443
+DEBUG:urllib3.connectionpool:https://cloud.iexapis.com:443 "GET /stable/stock/ccl/quote?token=pk_e172cc2e238141ec8dec4d2a5c5b4b3b HTTP/1.1" 200 None
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:38] "POST /quote HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:39] "GET /static/styles.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:40] "GET /buy HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:40] "GET /static/styles.css HTTP/1.1" 200 -
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): cloud.iexapis.com:443
+DEBUG:urllib3.connectionpool:https://cloud.iexapis.com:443 "GET /stable/stock/CCL/quote?token=pk_e172cc2e238141ec8dec4d2a5c5b4b3b HTTP/1.1" 200 None
+INFO:app:<class 'float'>
+INFO:app:<class 'float'>
+INFO:app:Completed SQL queries of the buy section
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:43] "[32mPOST /buy HTTP/1.1[0m" 302 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:44] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:44] "GET /static/styles.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:46] "GET /history HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:46] "GET /static/styles.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:51] "GET /buy HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:51] "GET /static/styles.css HTTP/1.1" 200 -
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): cloud.iexapis.com:443
+DEBUG:urllib3.connectionpool:https://cloud.iexapis.com:443 "GET /stable/stock/CCL/quote?token=pk_e172cc2e238141ec8dec4d2a5c5b4b3b HTTP/1.1" 200 None
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:54] "[31m[1mPOST /buy HTTP/1.1[0m" 400 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:54] "GET /static/styles.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:57] "GET /buy HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:42:58] "GET /static/styles.css HTTP/1.1" 200 -
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): cloud.iexapis.com:443
+DEBUG:urllib3.connectionpool:https://cloud.iexapis.com:443 "GET /stable/stock/CCL/quote?token=pk_e172cc2e238141ec8dec4d2a5c5b4b3b HTTP/1.1" 200 None
+INFO:app:<class 'float'>
+INFO:app:<class 'float'>
+INFO:app:Completed SQL queries of the buy section
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:43:01] "[32mPOST /buy HTTP/1.1[0m" 302 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:43:01] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:43:01] "GET /static/styles.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:43:05] "GET /quote HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:43:05] "GET /static/styles.css HTTP/1.1" 200 -
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): cloud.iexapis.com:443
+DEBUG:urllib3.connectionpool:https://cloud.iexapis.com:443 "GET /stable/stock/ccl/quote?token=pk_e172cc2e238141ec8dec4d2a5c5b4b3b HTTP/1.1" 200 None
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:43:07] "POST /quote HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:43:07] "GET /static/styles.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:43:34] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Nov/2021 13:43:34] "GET /static/styles.css HTTP/1.1" 200 -

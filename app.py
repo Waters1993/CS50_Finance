@@ -152,8 +152,10 @@ def history():
 
     user_id = session["user_id"]
 
-    purchases = db.execute("SELECT * FROM transactions WHERE user_id = ?", user_id)
-    print(purchases)
+    db.execute("SELECT * FROM transactions WHERE user_id = %s", (user_id,))
+
+    purchases = db.fetchall()
+
     return render_template("history.html", purchases=purchases, usd=usd)
 
 
