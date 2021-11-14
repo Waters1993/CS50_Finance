@@ -9,21 +9,14 @@ db_aws = mysql.connector.connect(
 )
 mycursor = db_aws.cursor()
 
-mycursor.execute("SELECT * FROM transactions where user_id = 17 ")
+mycursor.execute("show tables")
 #mycursor.execute("SELECT symbol, name, price, SUM(shares) as totalShares FROM transactions WHERE user_id = %s GROUP BY symbol", (user_id,))
 
-#stocks = mycursor.fetchall()[0]
+stocks = mycursor.fetchall()
 
 #stocks_price = float(stocks[7])
 #stocks_totalshares = float(stocks[3])
 
 #print(stocks_price)
 #print(stocks_totalshares)
-a = mycursor.fetchall()
-b = a
-data = float(a[0][7])
-data_2 = float(b[0][3])
-
-
-print(data)
-print(data_2)
+print(stocks)

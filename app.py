@@ -67,12 +67,11 @@ def index():
     
      
     db.execute("SELECT symbol, name, price, SUM(shares) as totalShares FROM transactions WHERE user_id = %s GROUP BY symbol", (user_id,))
+    
     stocks = db.fetchall()
-
     stocks_2 = stocks 
 
     stocks_price = float(stocks[0][2])
-    print(type(stocks_price))
     stocks_totalshares = float(stocks_2[0][3])
   
     db.execute("SELECT cash FROM users WHERE id = %s", ( user_id,))
@@ -84,7 +83,6 @@ def index():
     for stock in stocks:
         total += stocks_price * stocks_totalshares
 
-    app.logger.info("got through sql querys")
     return render_template("index.html", stocks=stocks, cash=cash, usd=usd, total=total)
 
 
@@ -293,22 +291,38 @@ def sell():
         item_name = lookup(symbol)["name"]
         price = shares * item_price
 
-        current_shares = db.execute(
-            "SELECT shares FROM transactions WHERE user_id = ? AND symbol = ? GROUP BY symbol", user_id, symbol)[0]["shares"]
+        #current_shares = db.execute(
+         #   "SELECT shares FROM transactions WHERE user_id = ? AND symbol = ? GROUP BY symbol", user_id, symbol)[0]["shares"]
+        
+        db.execute("SELECT shares FROM transactions WHERE user_id = %s AND symbol = %s GROUP BY symbol",(user_id, symbol))
+        
+        current_shares = float(db.fetchall()[0][0])
+
         if current_shares < shares:
             return apology("You do not own enough shares")
 
-        current_cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
+        #current_cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
 
-        db.execute("UPDATE users SET cash = ? WHERE id = ?", current_cash + price, user_id)
-        db.execute(
-            "INSERT into TRANSACTIONS (user_id, name, shares, price, type, symbol) VALUES( ?, ?, ?, ?, ?, ?)",
-            user_id, item_name, -shares, item_price, "SELL", symbol)
+        db.execute("SELECT cash FROM users WHERE id = %s", (user_id,))
+
+        current_cash = float(db.fetchall()[0][0])
+
+       # db.execute("UPDATE users SET cash = ? WHERE id = ?", current_cash + price, user_id)
+        db.execute("UPDATE users SET cash = %s WHERE id = %s", (current_cash + price, user_id))
+        db_aws.commit()
+
+        #db.execute(
+         #   "INSERT into TRANSACTIONS (user_id, name, shares, price, type, symbol) VALUES( ?, ?, ?, ?, ?, ?)",
+          #  user_id, item_name, -shares, item_price, "SELL", symbol)
+
+        db.execute("INSERT into transactions (user_id, name, shares, price, type, symbol) VALUES( %s, %s, %s, %s, %s, %s)", (user_id, item_name, -shares, item_price, "SELL", symbol))
+        db_aws.commit()
         return redirect('/')
 
     else:
-        symbols = db.execute("SELECT symbol FROM transactions WHERE user_id = ? GROUP BY symbol", user_id)
+        db.execute("SELECT symbol FROM transactions WHERE user_id = %s GROUP BY symbol", (user_id,))
 
+        symbols = db.fetchall()
         return render_template("sell.html", symbols=symbols)
 
 

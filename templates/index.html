@@ -15,7 +15,7 @@ HOME
     </thead>
 
     <tbody>
-        {% for stock in stocks %}
+        {% for stock in stocks if stock[3] > 0 %}
         <tr>
             <td>{{stock[0]}}</td>
             <td>{{stock[1]}}</td>
