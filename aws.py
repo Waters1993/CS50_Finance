@@ -9,18 +9,21 @@ db_aws = mysql.connector.connect(
 )
 mycursor = db_aws.cursor()
 
-#mycursor.execute("CREATE TABLE users (id INTEGER PRIMARY KEY AUTO_INCREMENT, username VARCHAR(200) NOT NULL, hash TEXT NOT NULL, cash NUMERIC NOT NULL DEFAULT 10000.00)")
-#mycursor.execute("insert into users (username, hash) values(%s, %s)",("mollie", 1234))
-#db_aws.commit()
-#mycursor.execute("delete from users")
-mycursor.execute("SELECT cash FROM users WHERE id = 8")
+mycursor.execute("SELECT * FROM transactions where user_id = 17 ")
+#mycursor.execute("SELECT symbol, name, price, SUM(shares) as totalShares FROM transactions WHERE user_id = %s GROUP BY symbol", (user_id,))
 
-cash = mycursor.fetchall()[0]
-item = cash[0]
-print(item)
-#WHERE id = %s", ( user_id[0]["cash"] ,))")
+#stocks = mycursor.fetchall()[0]
+
+#stocks_price = float(stocks[7])
+#stocks_totalshares = float(stocks[3])
+
+#print(stocks_price)
+#print(stocks_totalshares)
+a = mycursor.fetchall()
+b = a
+data = float(a[0][7])
+data_2 = float(b[0][3])
 
 
-#columns = [column[0] for column in mycursor.description]
-#print(columns)
-
+print(data)
+print(data_2)

@@ -17,11 +17,11 @@ HOME
     <tbody>
         {% for stock in stocks %}
         <tr>
-            <td>{{stock["symbol"]}}</td>
-            <td>{{stock["name"]}}</td>
-            <td>{{stock["totalShares"]}}</td>
-            <td>{{usd(stock["price"])}}</td>
-            <td>{{usd(stock["totalShares"] * stock["price"])}}</td>
+            <td>{{stock[0]}}</td>
+            <td>{{stock[1]}}</td>
+            <td>{{stock[3]}}</td>
+            <td>{{usd(stock[2])}}</td>
+            <td>{{usd(stock[3] * stock[2])}}</td>
         </tr>
         {% endfor %}
 

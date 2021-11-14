@@ -3,7 +3,7 @@ import mysql.connector
 import sys
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(filename='errorlog.txt', level=logging.DEBUG)
 
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
@@ -68,19 +68,21 @@ def index():
      
     db.execute("SELECT symbol, name, price, SUM(shares) as totalShares FROM transactions WHERE user_id = %s GROUP BY symbol", (user_id,))
     stocks = db.fetchall()
-        
-    
-    
+
+    stocks_2 = stocks 
+
+    stocks_price = float(stocks[0][2])
+    print(type(stocks_price))
+    stocks_totalshares = float(stocks_2[0][3])
+  
     db.execute("SELECT cash FROM users WHERE id = %s", ( user_id,))
+    pre_cash = db.fetchall()[0]
+    cash = float(pre_cash[0])
 
-    item = db.fetchall()[0]
-    
-    cash = item[0]
-
-    total = cash
+    total = float(cash)
 
     for stock in stocks:
-        total += stock["price"] * stock["totalShares"]
+        total += stocks_price * stocks_totalshares
 
     app.logger.info("got through sql querys")
     return render_template("index.html", stocks=stocks, cash=cash, usd=usd, total=total)
@@ -96,6 +98,7 @@ def buy():
         symbol = request.form.get("symbol").upper()
         # use the helper function look up which returns a dictionary of info about the symbl
         item = lookup(symbol)
+        print(item)
 
         if not symbol:
             return apology("Please enter a symbol!")
@@ -111,22 +114,33 @@ def buy():
             return apology("Shares must be a positive integer")
 
         user_id = session["user_id"]
-        cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
-
+        #cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
+        db.execute("SELECT cash FROM users WHERE id = %s", (user_id,))
+        pre_cash = db.fetchall()[0]
+        cash = float(pre_cash[0])
+        app.logger.info(type(cash))
+        
         item_name = item["name"]
         item_price = item["price"]
         total_price = item_price * shares
+        app.logger.info(type(total_price))
 
         if cash < total_price:
             return apology("You do not have enough cash to make this purchase")
         else:
             # Update the users table and subtract the price he has paid
-            # Insert the transaction into the transaction table
+            
+            ## Insert the transaction into the transaction table
 
-            db.execute("UPDATE users SET cash = ? WHERE id = ?", cash - total_price, user_id)
-            db.execute("INSERT INTO transactions (user_id, name, shares, price, type, symbol) VALUES (?, ? , ?, ?, ?, ?)",
-                       user_id, item_name, shares, item_price, 'BUY', symbol)
+            #db.execute("UPDATE users SET cash = ? WHERE id = ?", cash - total_price, user_id)
+            db.execute("UPDATE users SET cash = %s WHERE id = %s", (cash - total_price, user_id))
 
+            #db.execute("INSERT INTO transactions (user_id, name, shares, price, type, symbol) VALUES (?, ? , ?, ?, ?, ?)",
+             #          user_id, item_name, shares, item_price, 'BUY', symbol)
+
+            db.execute("INSERT INTO transactions (user_id, name, shares, price, type, symbol) VALUES (%s, %s, %s, %s, %s, %s)",(user_id, item_name, shares, item_price, 'BUY', symbol))
+            db_aws.commit()
+        app.logger.info("Completed SQL queries of the buy section")
         return redirect('/')
     # User reached route via GET (as by clicking a link or via redirect)
     else:
