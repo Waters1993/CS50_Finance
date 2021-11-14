@@ -12,14 +12,14 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import apology, login_required, lookup, usd
 
 # Configure application
-app = Flask(__name__)
+application = Flask(__name__)
 
 # Ensure templates are auto-reloaded
-app.config["TEMPLATES_AUTO_RELOAD"] = True
+application.config["TEMPLATES_AUTO_RELOAD"] = True
 
 
 # Ensure responses aren't cached
-@app.after_request
+@application.after_request
 def after_request(response):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     response.headers["Expires"] = 0
@@ -28,13 +28,13 @@ def after_request(response):
 
 
 # Custom filter
-app.jinja_env.filters["usd"] = usd
+application.jinja_env.filters["usd"] = usd
 
 # Configure session to use filesystem (instead of signed cookies)
-app.config["SESSION_FILE_DIR"] = mkdtemp()
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
+application.config["SESSION_FILE_DIR"] = mkdtemp()
+application.config["SESSION_PERMANENT"] = False
+application.config["SESSION_TYPE"] = "filesystem"
+Session(application)
 
 # Configure CS50 Library to use SQLite database
 #db = SQL("sqlite:///finance.db")
@@ -55,7 +55,7 @@ if not os.environ.get("API_KEY"):
     raise RuntimeError("API_KEY not set")
 
 
-@app.route("/")
+@application.route("/")
 @login_required
 def index():
     """Show portfolio of stocks"""
@@ -86,7 +86,7 @@ def index():
     return render_template("index.html", stocks=stocks, cash=cash, usd=usd, total=total)
 
 
-@app.route("/buy", methods=["GET", "POST"])
+@application.route("/buy", methods=["GET", "POST"])
 @login_required
 def buy():
     """Buy shares of stock"""
@@ -142,7 +142,7 @@ def buy():
         return render_template("buy.html")
 
 
-@app.route("/history")
+@application.route("/history")
 @login_required
 def history():
     """Show history of transactions"""
@@ -156,7 +156,7 @@ def history():
     return render_template("history.html", purchases=purchases, usd=usd)
 
 
-@app.route("/login", methods=["GET", "POST"])
+@application.route("/login", methods=["GET", "POST"])
 def login():
     """Log user in"""
 
@@ -193,7 +193,7 @@ def login():
         return render_template("login.html")
 
 
-@app.route("/logout")
+@application.route("/logout")
 def logout():
     """Log user out"""
 
@@ -204,7 +204,7 @@ def logout():
     return redirect("/")
 
 
-@app.route("/quote", methods=["GET", "POST"])
+@application.route("/quote", methods=["GET", "POST"])
 @login_required
 def quote():
     """Get stock quote."""
@@ -234,7 +234,7 @@ def quote():
         return render_template("quote.html")
 
 
-@app.route("/register", methods=["GET", "POST"])
+@application.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
 
@@ -269,7 +269,7 @@ def register():
         return render_template("register.html")
 
 
-@app.route("/sell", methods=["GET", "POST"])
+@application.route("/sell", methods=["GET", "POST"])
 @login_required
 def sell():
     """Sell shares of stock"""
@@ -330,4 +330,4 @@ def errorhandler(e):
 
 # Listen for errors
 for code in default_exceptions:
-    app.errorhandler(code)(errorhandler)
+    application.errorhandler(code)(errorhandler)
