@@ -1,9 +1,5 @@
 import os
 import mysql.connector
-import sys
-import logging
-
-logging.basicConfig(filename='errorlog.txt', level=logging.DEBUG)
 
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
@@ -100,7 +96,7 @@ def buy():
         symbol = request.form.get("symbol").upper()
         # use the helper function look up which returns a dictionary of info about the symbl
         item = lookup(symbol)
-        print(item)
+
 
         if not symbol:
             return apology("Please enter a symbol!")
@@ -120,12 +116,10 @@ def buy():
         db.execute("SELECT cash FROM users WHERE id = %s", (user_id,))
         pre_cash = db.fetchall()[0]
         cash = float(pre_cash[0])
-        app.logger.info(type(cash))
         
         item_name = item["name"]
         item_price = item["price"]
         total_price = item_price * shares
-        app.logger.info(type(total_price))
 
         if cash < total_price:
             return apology("You do not have enough cash to make this purchase")
@@ -142,7 +136,6 @@ def buy():
 
             db.execute("INSERT INTO transactions (user_id, name, shares, price, type, symbol) VALUES (%s, %s, %s, %s, %s, %s)",(user_id, item_name, shares, item_price, 'BUY', symbol))
             db_aws.commit()
-        app.logger.info("Completed SQL queries of the buy section")
         return redirect('/')
     # User reached route via GET (as by clicking a link or via redirect)
     else:
@@ -182,7 +175,6 @@ def login():
             return apology("must provide password", 403)
 
         # Query database for username
-        print("Execute query")
         db.execute("SELECT * FROM users WHERE username = %s", (request.form.get("username"),))
        # db.execute("insert into users (username, hash) values (%s , %s)", (request.form.get("username"), hashkey))
         rows = db.fetchall()
@@ -198,7 +190,6 @@ def login():
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
-        print("Made it to login")
         return render_template("login.html")
 
 
@@ -271,12 +262,10 @@ def register():
             except:
                 return apology("this user name already exists")
 
-            print("redirected to index")
             return redirect("/")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
-        print("register")
         return render_template("register.html")
 
 
