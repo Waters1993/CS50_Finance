@@ -47,7 +47,7 @@ db_aws = mysql.connector.connect(
   database="table1",
   buffered = True
 )
-db = db_aws.cursor()
+
 
 # Make sure API key is set
 
@@ -60,6 +60,7 @@ if not os.environ.get("API_KEY"):
 def index():
     """Show portfolio of stocks"""
     user_id = session["user_id"]
+    db = db_aws.cursor()
     
      
     db.execute("SELECT symbol, name, price, SUM(shares) as totalShares FROM transactions WHERE user_id = %s GROUP BY symbol", (user_id,))
@@ -83,14 +84,15 @@ def index():
     for stock in stocks:
         total += stocks_price * stocks_totalshares
 
-    return render_template("index.html", stocks=stocks, cash=cash, usd=usd, total=total)
+    return render_template("index.html", stocks=stocks, cash=cash, usd=usd, total=total) 
 
+    db.close()   
 
 @application.route("/buy", methods=["GET", "POST"])
 @login_required
 def buy():
     """Buy shares of stock"""
-
+    db = db_aws.cursor()
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
         symbol = request.form.get("symbol").upper()
@@ -136,17 +138,20 @@ def buy():
 
             db.execute("INSERT INTO transactions (user_id, name, shares, price, type, symbol) VALUES (%s, %s, %s, %s, %s, %s)",(user_id, item_name, shares, item_price, 'BUY', symbol))
             db_aws.commit()
+   
         return redirect('/')
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("buy.html")
+
+    db.close()
 
 
 @application.route("/history")
 @login_required
 def history():
     """Show history of transactions"""
-
+    db = db_aws.cursor()
     user_id = session["user_id"]
 
     db.execute("SELECT * FROM transactions WHERE user_id = %s", (user_id,))
@@ -155,11 +160,11 @@ def history():
 
     return render_template("history.html", purchases=purchases, usd=usd)
 
-
+    db.close()
 @application.route("/login", methods=["GET", "POST"])
 def login():
     """Log user in"""
-
+    db = db_aws.cursor()
     # Forget any user_id
     session.clear()
 
@@ -192,6 +197,8 @@ def login():
     else:
         return render_template("login.html")
 
+    db.close()
+
 
 @application.route("/logout")
 def logout():
@@ -208,7 +215,7 @@ def logout():
 @login_required
 def quote():
     """Get stock quote."""
-
+    db = db_aws.cursor()
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
@@ -233,11 +240,13 @@ def quote():
     else:
         return render_template("quote.html")
 
+    db.close()
+
 
 @application.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
-
+    db = db_aws.cursor()
     if request.method == "POST":
         # Ensure username was submitted
         if not request.form.get("username"):
@@ -268,11 +277,15 @@ def register():
     else:
         return render_template("register.html")
 
+    db.close()
+
 
 @application.route("/sell", methods=["GET", "POST"])
 @login_required
 def sell():
     """Sell shares of stock"""
+
+    db = db_aws.cursor()
     user_id = session["user_id"]
 
     if request.method == "POST":
@@ -319,6 +332,8 @@ def sell():
 
         symbols = db.fetchall()
         return render_template("sell.html", symbols=symbols)
+
+    db.close()
 
 
 def errorhandler(e):
