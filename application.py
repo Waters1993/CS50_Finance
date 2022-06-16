@@ -291,6 +291,7 @@ def sell():
     if request.method == "POST":
         symbol = request.form.get("symbol")
         shares = int(request.form.get("shares"))
+        print(shares)
 
         if shares < 0:
             return apology("Shares must be a positve number")
@@ -305,6 +306,7 @@ def sell():
         db.execute("SELECT shares FROM transactions WHERE user_id = %s AND symbol = %s GROUP BY symbol",(user_id, symbol))
         
         current_shares = float(db.fetchall()[0][0])
+        print(current_shares)
 
         if current_shares < shares:
             return apology("You do not own enough shares")
