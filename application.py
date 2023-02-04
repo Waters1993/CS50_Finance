@@ -1,7 +1,6 @@
 import os
 import psycopg2
 
-from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
@@ -65,15 +64,15 @@ def index():
     db.execute("SELECT symbol, name, price, SUM(shares) as totalShares FROM transactions WHERE user_id = %s GROUP BY symbol, name,price", (user_id,))
     
     stocks = db.fetchall()
-    stocks_2 = stocks 
+    # stocks_2 = stocks 
 
-    try:
-        stocks_price = float(stocks[0][2])
-        stocks_totalshares = float(stocks_2[0][3])
+    # try:
+    #     stocks_price = float(stocks[0][2])
+    #     stocks_totalshares = float(stocks_2[0][3])
         
-    except IndexError:
-        stocks_price = 0
-        stocks_totalshares = 0
+    # except IndexError:
+    #     stocks_price = 0
+    #     stocks_totalshares = 0
     
 
     db.execute("SELECT cash FROM users WHERE id = %s", ( user_id,))
@@ -84,11 +83,8 @@ def index():
     print(total)
 
     for stock in stocks:
-        print(stock)
-        print(stocks_price, stocks_totalshares)
-        total += stocks_price * stocks_totalshares
-        print(total)
-
+        total += float(stock[2]) * float(stock[3])
+ 
     return render_template("index.html", stocks=stocks, cash=cash, usd=usd, total=total) 
 
     db.close()   
