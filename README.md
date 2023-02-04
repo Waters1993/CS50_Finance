@@ -1,1 +1,2 @@
-# CS50_Finance
+# Web application built with python and the Flask framework
+
