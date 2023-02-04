@@ -1,5 +1,5 @@
 import os
-import mysql.connector
+import psycopg2
 
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
@@ -40,12 +40,11 @@ Session(application)
 #db = SQL("sqlite:///finance.db")
 
 # Configure AWS RDS
-db_aws = mysql.connector.connect(
-  host="database-1.cjaaudlyizww.us-east-2.rds.amazonaws.com",
-  user="admin",
-  password="password",
-  database="table1",
-  buffered = True
+db_aws = psycopg2.connect(
+  host="cs50financedb.crmdu8vktuec.us-east-1.rds.amazonaws.com",
+  database="postgres",
+  user="postgres",
+  password="Mearck10",
 )
 
 
@@ -63,7 +62,7 @@ def index():
     db = db_aws.cursor()
     
      
-    db.execute("SELECT symbol, name, price, SUM(shares) as totalShares FROM transactions WHERE user_id = %s GROUP BY symbol", (user_id,))
+    db.execute("SELECT symbol, name, price, SUM(shares) as totalShares FROM transactions WHERE user_id = %s GROUP BY symbol, name,price", (user_id,))
     
     stocks = db.fetchall()
     stocks_2 = stocks 
@@ -71,18 +70,24 @@ def index():
     try:
         stocks_price = float(stocks[0][2])
         stocks_totalshares = float(stocks_2[0][3])
+        
     except IndexError:
         stocks_price = 0
         stocks_totalshares = 0
-  
+    
+
     db.execute("SELECT cash FROM users WHERE id = %s", ( user_id,))
     pre_cash = db.fetchall()[0]
     cash = float(pre_cash[0])
 
     total = float(cash)
+    print(total)
 
     for stock in stocks:
+        print(stock)
+        print(stocks_price, stocks_totalshares)
         total += stocks_price * stocks_totalshares
+        print(total)
 
     return render_template("index.html", stocks=stocks, cash=cash, usd=usd, total=total) 
 
@@ -266,7 +271,7 @@ def register():
             # Generate a hash key to be placed in the data base instead of the password
             hashkey = generate_password_hash(request.form.get("password"), method='pbkdf2:sha256', salt_length=8)
             try:
-                db.execute("insert into users (username, hash) values (%s , %s)", (request.form.get("username"), hashkey))
+                db.execute("insert into users (username, hash) values (%s, %s)", (request.form.get("username"), hashkey))
                 db_aws.commit()
             except:
                 return apology("this user name already exists")
@@ -303,7 +308,7 @@ def sell():
         #current_shares = db.execute(
          #   "SELECT shares FROM transactions WHERE user_id = ? AND symbol = ? GROUP BY symbol", user_id, symbol)[0]["shares"]
         
-        db.execute("SELECT shares FROM transactions WHERE user_id = %s AND symbol = %s GROUP BY symbol",(user_id, symbol))
+        db.execute("SELECT shares FROM transactions WHERE user_id = %s AND symbol = %s GROUP BY symbol, shares",(user_id, symbol))
         
         current_shares = float(db.fetchall()[0][0])
         print(current_shares)
